@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ApiService } from  "../repositorio/RepositorioUsuario";
+import { ApiService } from "../repositorio/RepositorioUsuario";
 import { useUser } from "../control/SesionUsuario";
 
 export default function LoginPage() {
@@ -21,10 +21,6 @@ export default function LoginPage() {
       const token = response.token;
       login(token);
       
-
-      console.log(email);
-      console.log(token);
-
       const userData = await ApiService.obtenerDatosUsuario(email, token);
       usuarioActual(userData);
       
@@ -35,97 +31,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Iniciar sesión</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input 
-        type="email" 
-        placeholder="Correo electrónico" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)} 
-      />
-      <input 
-        type="password" 
-        placeholder="Contraseña" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-      />
-      <button onClick={handleLogin}>Acceder</button>
-    </div>
-  );
-}
-
-
-/*import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
-import { loginUser }  from "../repositorio/RepositorioUsuario";
-import { datosusuario }  from "../repositorio/RepositorioUsuario";
-import  UsuarioController  from "../control/UsuarioController";
-import { useUser } from "../control/SesionUsuario";
-import Usuario from "../modelo/Usuario";
-
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [usuarioActual] = useState(new Usuario());
-  const [error, setError] = useState(null);
-  const { login } = useUser();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    let jsonData;
-    var usuarios = [];
-    const result = await loginUser(email, password);
-    if (result.success) {
-      login(result.token);
-
-      jsonData = await datosusuario(email , result.token);
-      /*
-      
-      
-      usuarios = jsonData.map(
-        (item) => new Usuario(item.id, item.nombres, item.apellidos, item.direccionEnvio, item.email, item.fechaNacimiento, item.passwordHash,item.rol,item.creadoEn)
-      );
-
-      usuarioActual(usuarios[0]);*/
-      /*
-    } else {
-      setError("Credenciales incorrectas");
-    }
-
-
-  };
-
-
-
-
-  return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
-        <h2>Iniciar sesión</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen px-6">
+      <div className="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-extrabold text-white text-center mb-6">Iniciar sesión</h2>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <input
           type="email"
           placeholder="Correo electrónico"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          className="w-full px-4 py-3 mb-4 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
         />
         <input
           type="password"
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          className="w-full px-4 py-3 mb-4 bg-gray-700 text-white rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
         />
-        {error && <p className="error-message">{error}</p>}
-        <button type="submit">Acceder</button>
-      </form>
+        <button onClick={handleLogin} className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 active:bg-green-700 focus:ring-4 focus:ring-green-400">Acceder</button>
+        <p className="mt-4 text-center text-gray-400">
+          ¿No tienes cuenta? <a href="/" className="text-green-400 hover:text-green-300">Regístrate</a>
+        </p>
+      </div>
     </div>
   );
 }
-
-export default Login;
-*/

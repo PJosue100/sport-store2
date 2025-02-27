@@ -38,7 +38,8 @@ function CarritoPage() {
               idPedido: response.id, // Ahora se accede correctamente
               idProducto: item.idProducto,
               cantidad: item.cantidad,
-              precioUnitario: item.precio * item.cantidad, // Corregido
+              precioUnitario: item.precio, // Corregido
+              subtotal: item.precio * item.cantidad,
             },
             token
           );

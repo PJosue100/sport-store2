@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const API_URL = "http://localhost:8085/api/productos";
+const API_URL = "http://localhost:8087/api/productos";
 //const API_URL = "http://localhost:8080/api/productos/publico";
 
 function useFetchProductos(token) {

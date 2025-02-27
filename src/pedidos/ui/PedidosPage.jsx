@@ -35,7 +35,7 @@ function PedidosPage() {
 
   const obtenerProductoPorId = async (idProducto) => {
     try {
-      const response = await fetch(`http://localhost:8085/api/productos/${idProducto}`, {
+      const response = await fetch(`http://localhost:8087/api/productos/${idProducto}`, {
         method: "GET",
         headers: {
           Authorization: token,
@@ -52,31 +52,61 @@ function PedidosPage() {
   };
 
   return (
-    <div>
-      <h1>Mis Pedidos</h1>
+    <div className="container mt-24">
+      <h1 className="text-4xl font-extrabold text-center mb-8 text-green-400">Mis Pedidos</h1>
       {pedidos.length === 0 ? (
-        <p>No hay pedidos disponibles.</p>
+        <p className="text-center text-lg text-gray-300">No hay pedidos disponibles.</p>
       ) : (
-        <ul>
+        <div className="overflow-x-auto">
           {pedidos.map((pedido) => (
-            <li key={pedido.id}>
-              <h2>Pedido ID: {pedido.id}</h2>
-              <p>Fecha: {pedido.fechaPedido}</p>
-              <h3>Detalles:</h3>
-              <ul>
-                {detalles[pedido.id]?.map((detalle) => (
-                  <li key={detalle.id}>
-                    Producto: {productosInfo[detalle.idProducto] ? `${productosInfo[detalle.idProducto].descripcion} - Q ${productosInfo[detalle.idProducto].precio}.00` : "Cargando..."}
-                  </li>
-                ))}
-              </ul>
-            </li>
+            <div key={pedido.id} className="bg-gray-800 p-6 mb-6 rounded-lg shadow-md">
+              <h2 className="text-2xl text-green-400">Pedido ID: {pedido.id}</h2>
+              <p className="text-gray-300">Fecha: {pedido.fechaPedido}</p>
+              <table className="w-full mt-4 border-collapse">
+                <thead>
+                  <tr className="bg-gray-700 text-left text-white">
+                    <th className="p-3">Imagen</th>
+                    <th className="p-3">Producto</th>
+                    <th className="p-3">Cantidad</th>
+                    <th className="p-3">Precio</th>
+                    <th className="p-3">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {detalles[pedido.id]?.map((detalle) => (
+                    <tr key={detalle.id} className="border-b border-gray-600">
+                      <td className="p-3">
+                        {productosInfo[detalle.idProducto]?.imagenUrl ? (
+                          <img
+                            src={productosInfo[detalle.idProducto].imagenUrl}
+                            alt={productosInfo[detalle.idProducto].descripcion}
+                            className="w-16 h-16 object-cover rounded"
+                          />
+                        ) : (
+                          "Cargando..."
+                        )}
+                      </td>
+                      <td className="p-3 text-white">
+                        {productosInfo[detalle.idProducto]?.descripcion || "Cargando..."}
+                      </td>
+                      <td className="p-3 text-green-400">{detalle.cantidad}</td>
+                      <td className="p-3 text-green-400">Q {productosInfo[detalle.idProducto]?.precio}.00</td>
+                      <td className="p-3 text-green-400">Q {detalle.cantidad * productosInfo[detalle.idProducto]?.precio}.00</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-right text-green-400 text-lg font-bold mt-4">
+                Total: Q {detalles[pedido.id]?.reduce((total, detalle) => total + (detalle.cantidad * (productosInfo[detalle.idProducto]?.precio || 0)), 0)}.00
+              </p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-      {error && <p>Error al cargar productos: {error}</p>}
+      {error && <p className="text-red-500 text-center">Error al cargar productos: {error}</p>}
     </div>
   );
 }
 
 export default PedidosPage;
+
